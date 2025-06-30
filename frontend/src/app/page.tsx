@@ -11,7 +11,7 @@ export default function Home() {
         "Content-Type": "application/json"
       }});
       const data = await response.json()
-      console.log(data);
+      
       
     
   }
@@ -20,6 +20,8 @@ export default function Home() {
   return (
     <div>
       <button onClick={onSubmit}>Test middleware</button>
+       <h1 className="text-3xl font-bold mb-4">Hello DaisyUI</h1>
+      <button className="btn btn-primary">C’est un bouton</button>
     </div>
   )
 }

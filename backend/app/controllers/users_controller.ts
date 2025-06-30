@@ -12,24 +12,26 @@ export default class UsersController {
 
     }
 
-    async create(ctx: HttpContext) {
+    async create({request, response}: HttpContext) {
 
-        const { email, password, full_name, role  } = ctx.request.body()
+        const { user } = request.body()
 
-        if (!email || !password) {
-            return ctx.response.status(402).send({error: "No user or email provided"})
+        console.log(request.body());
+        
+        if (!user.email || !user.password) {
+            return response.status(400).send({error: "No user or email provided"})
         }
 
-        const existingUser = await User.findBy('email', email)
+        const existingUser = await User.findBy('email', user.email)
         if (existingUser) {
-            return ctx.response.status(409).send("User already exist")
+            return response.status(409).send("User already exist")
         }
 
         User.create({
-            email,
-            password
+            email: user.email,
+            password: user.password
         })
-        return ctx.response.status(201).send("User created Successfully")
+        return response.status(201).send("User created Successfully")
     }
 
 

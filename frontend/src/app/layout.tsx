@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
+import Nav from "@/Components/Nav";
 
 
 
@@ -15,10 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="synthwave">
       <body
         className={`antialiased`}
       >
+        <Nav />
         {children}
       </body>
     </html>
