@@ -9,6 +9,13 @@
 
 
 const UsersController = () => import('#controllers/users_controller')
-import router from '@adonisjs/core/services/router'
+const GameComposeController = () => import('#controllers/game_composes_controller')
 
-router.post('/', [UsersController, 'create'])
+import router from '@adonisjs/core/services/router'
+import { middleware } from './kernel.js'
+
+router.post('register', [UsersController, 'create'])
+router.post('login', [UsersController, 'login'])
+router.get('game-compose', [GameComposeController, 'create']).middleware(middleware.auth())
+
+// .middleware(AuthMiddleware)

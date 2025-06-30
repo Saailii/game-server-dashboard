@@ -21,10 +21,6 @@ export default class UsersController {
         }
 
         const existingUser = await User.findBy('email', email)
-        console.log(existingUser);
-        
-
-
         if (existingUser) {
             return ctx.response.status(409).send("User already exist")
         }
@@ -33,12 +29,25 @@ export default class UsersController {
             email,
             password
         })
-        
         return ctx.response.status(201).send("User created Successfully")
     }
 
 
-    async login() {
+    async login({ response, request }: HttpContext) {
+        const { email, password } = request.body()
+
+        const user = await User.verifyCredentials(email, password)
+
+        if (!user) {
+            return response.status(404).send({error : "User not found"})
+        }
+
+        const token = await User.accessTokens.create(user)
+
+        
+
+        return response.status(200).send({token})
+
         
     }
 }
