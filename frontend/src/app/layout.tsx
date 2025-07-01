@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import Nav from "@/Components/Nav";
-
-
+import { AuthProvider } from "@/context/authContext";
+import Dock from "@/Components/Dock";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,11 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="synthwave">
-      <body
-        className={`antialiased`}
-      >
-        <Nav />
-        {children}
+      <body className={`antialiased`}>
+        <AuthProvider>
+          <Nav />
+          <Dock />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

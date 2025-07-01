@@ -1,16 +1,21 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export default function Home() {
+  
 
   const onSubmit = async () => {
-    const response = await fetch('http://localhost:3333/game-compose', {
+    const response = await fetch('http://localhost:3333/me', {
       headers: {
-        "Authorization": "Bearer oat_MTA.d3liY3V5SkZfbUNremtKVTlyM1pfSGpsS3JpaU9lRWhiNWFQTndrUjE4MDI2MjQ3Mzc",
         "Content-Type": "application/json"
-      }});
+      },
+      credentials: 'include'
+    });
+      
       const data = await response.json()
+      
+      
       
       
     
@@ -19,9 +24,9 @@ export default function Home() {
 
   return (
     <div>
-      <button onClick={onSubmit}>Test middleware</button>
+      <button className="btn btn-primary" onClick={onSubmit}>Test middleware</button>
        <h1 className="text-3xl font-bold mb-4">Hello DaisyUI</h1>
-      <button className="btn btn-primary">C’est un bouton</button>
+      
     </div>
   )
 }
