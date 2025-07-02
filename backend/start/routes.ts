@@ -12,6 +12,7 @@ const GameComposeController = () => import('#controllers/game_composes_controlle
 const AllyAuthsController = () => import('#controllers/ally_auths_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+import GamemodesController from '#controllers/gamemodes_controller'
 
 router.post('register', [UsersController, 'create'])
 router.post('login', [UsersController, 'login'])
@@ -23,5 +24,5 @@ router.get('/auth/github', async ({ ally }) => {
   return ally.use('github').redirect()
 })
 
-router.get('game-compose', [GameComposeController, 'create']).middleware(middleware.auth())
+router.post('game-compose', [GamemodesController, 'store']).middleware(middleware.auth())
 // .middleware(AuthMiddleware)

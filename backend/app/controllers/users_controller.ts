@@ -2,10 +2,8 @@
 
 import User from '#models/user'
 import { LoginAuthValidator } from '#validators/auth'
-import stringHelpers from '@adonisjs/core/helpers/string'
 
 import { HttpContext } from '@adonisjs/core/http'
-import hash from '@adonisjs/core/services/hash'
 
 export default class UsersController {
   index() {}

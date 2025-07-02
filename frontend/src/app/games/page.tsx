@@ -1,3 +1,9 @@
+import CreateGamemodeForm from "@/Components/gamemode/createGamemode";
+
 export default function page() {
-  return <div>Page Games</div>;
+  return (
+    <div>
+      <CreateGamemodeForm />
+    </div>
+  );
 }

@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('name')
       table.string('game_name')
-      table.string('docker_file')
+      table.string('docker_file_path')
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

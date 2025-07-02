@@ -12,7 +12,7 @@ export default class Gamemode extends BaseModel {
   declare gameName: string
 
   @column()
-  declare dockerFile: string
+  declare dockerFilePath: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
