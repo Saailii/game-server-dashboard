@@ -29,24 +29,12 @@ export default function Page() {
     }
   };
 
-  const onSubmitTest = async () => {
-    if (!user) {
-      const token = cookie.get("token");
-      if (!token) {
-        return console.warn("You are not connected");
-      }
-      const response = await fetch("http://localhost:3333/me", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const onSubmitGithubForm = async () => {
+    const response = await fetch("http://localhost:3333/github/redirect");
+    if (response.ok) {
       const data = await response.json();
       console.log(data);
-      console.log(token);
     }
-    console.log("Brother t'es deja connecte");
   };
 
   return (
@@ -70,8 +58,11 @@ export default function Page() {
       <button className="btn btn-primary" onClick={() => onSubmitLoginForm()}>
         Login
       </button>
-      <button className="btn btn-secondary" onClick={() => onSubmitTest()}>
-        test me
+      <button
+        className="btn btn-secondary"
+        onClick={() => onSubmitGithubForm()}
+      >
+        Github
       </button>
     </div>
   );
