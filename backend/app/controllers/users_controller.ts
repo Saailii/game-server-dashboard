@@ -2,7 +2,10 @@
 
 import User from '#models/user'
 import { LoginAuthValidator } from '#validators/auth'
+import stringHelpers from '@adonisjs/core/helpers/string'
+
 import { HttpContext } from '@adonisjs/core/http'
+import hash from '@adonisjs/core/services/hash'
 
 export default class UsersController {
   index() {}
@@ -66,40 +69,5 @@ export default class UsersController {
     }
 
     return response.ok({ user: auth.user })
-  }
-
-  async github({ response, ally }: HttpContext) {
-    const gh = ally.use('github')
-
-    if (gh.accessDenied()) {
-      return response.badRequest({ message: 'You have cancelled the login process' })
-    }
-
-    if (gh.stateMisMatch()) {
-      return response.badRequest({
-        message: 'We are unable to verify the request. Please try again',
-      })
-    }
-
-    if (gh.hasError()) {
-      return response.badRequest({ message: gh.getError() })
-    }
-
-    const ghUser = await gh.user()
-
-    // Créer ou retrouver l'utilisateur
-    const user = await User.firstOrCreate(
-      { email: ghUser.email },
-      {
-        fullName: ghUser.name,
-        email: ghUser.email,
-        password: crypto.randomUUID(), // si mot de passe requis
-      }
-    )
-
-    // Générer un token
-    const token = await User.accessTokens.create(user)
-
-    return response.ok({ token })
   }
 }

@@ -3,8 +3,12 @@ import { useAuth } from "@/context/authContext";
 import Link from "next/link";
 
 export default function Nav() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   console.log(user);
+
+  if (isLoading) {
+    return <span className="loading loading-spinner loading-sm"></span>;
+  }
 
   return (
     <nav>

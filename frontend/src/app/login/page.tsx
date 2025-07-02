@@ -8,7 +8,6 @@ interface token {
 }
 
 export default function Page() {
-  const { user, RequireAuth } = useContext(AuthContext);
   const [email, setEmail] = useState<String>();
   const [password, setPassword] = useState<String>();
 
@@ -29,12 +28,8 @@ export default function Page() {
     }
   };
 
-  const onSubmitGithubForm = async () => {
-    const response = await fetch("http://localhost:3333/github/redirect");
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-    }
+  const onSubmitGithubForm = () => {
+    window.location.href = "http://localhost:3333/auth/github";
   };
 
   return (
