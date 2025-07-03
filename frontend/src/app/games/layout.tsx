@@ -10,5 +10,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="flex justify-center items-center">{children}</div>;
+  return <div className="flex justify-center items-center ">{children}</div>;
 }

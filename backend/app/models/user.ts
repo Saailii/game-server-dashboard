@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import Gamemode from '#models/gamemode'
+import Application from '#models/application'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
@@ -26,8 +26,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare role: string
 
-  @hasMany(() => Gamemode)
-  declare gamemodes: HasMany<typeof Gamemode>
+  @hasMany(() => Application)
+  declare application: HasMany<typeof Application>
 
   @column({ serializeAs: null })
   declare password: string

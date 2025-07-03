@@ -1,22 +1,22 @@
-import Gamemode from '#models/gamemode'
+import Application from '#models/application'
 import User from '#models/user'
-import { createOrUpdateGamemode } from '#validators/gamemode'
+import { createOrUpdateApplication } from '#validators/application'
 import { cuid } from '@adonisjs/core/helpers'
 import { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import fs from 'node:fs'
 
-export default class GamemodesController {
+export default class ApplicationController {
   async index() {
-    return await Gamemode.all()
+    return await Application.all()
   }
 
   async store({ request, response, auth }: HttpContext) {
-    const { gameName, name } = await request.validateUsing(createOrUpdateGamemode)
+    const { appName, name } = await request.validateUsing(createOrUpdateApplication)
 
     // Trim wasn't working ????
     const nameTrim = name.replaceAll(' ', '')
-    const gameNameTrim = gameName.replaceAll(' ', '')
+    const appNameTrim = appName.replaceAll(' ', '')
 
     const user = await User.findBy('email', auth.user?.email)
 
@@ -45,9 +45,9 @@ export default class GamemodesController {
       name: `docker-compose.yml`,
     })
 
-    Gamemode.create({
+    Application.create({
       name: nameTrim,
-      gameName: gameNameTrim,
+      appName: appNameTrim,
       dockerFilePath: path,
       userId: user.id,
     })
@@ -61,18 +61,18 @@ export default class GamemodesController {
       return response.badRequest({ error: 'badrequest' })
     }
 
-    const gamemode = await Gamemode.find(id)
-    if (!gamemode) {
-      return response.notFound({ error: 'Gamemode not found maybe was deleted' })
+    const application = await Application.find(id)
+    if (!application) {
+      return response.notFound({ error: 'Application not found maybe was deleted' })
     }
 
-    const contentFile = fs.readFileSync(`${gamemode.dockerFilePath}/docker-compose.yml`, 'utf8')
+    const contentFile = fs.readFileSync(`${application.dockerFilePath}/docker-compose.yml`, 'utf8')
 
     if (!contentFile) {
       return response.notFound('No file founded')
     }
 
-    return { gamemode, contentFile }
+    return { application, contentFile }
   }
 
   async showByGame() {}

@@ -3,9 +3,9 @@ import { useAuth } from "@/context/authContext";
 import cookie from "cookiejs";
 import { FormEvent, useState } from "react";
 
-export default function CreateGamemodeForm() {
+export default function CreateAppForm() {
   const [file, setFile] = useState<File | null>(null);
-  const [gameName, setGameName] = useState<string>("");
+  const [appName, setAppName] = useState<string>("");
   const [name, setName] = useState<string>("");
   const { user, RequireAuth } = useAuth();
 
@@ -21,7 +21,7 @@ export default function CreateGamemodeForm() {
 
     const formdata = new FormData();
     formdata.append("file", file);
-    formdata.append("gameName", gameName);
+    formdata.append("appName", appName);
     formdata.append("name", name);
 
     const response = await fetch("http://localhost:3333/game-compose", {
@@ -48,12 +48,12 @@ export default function CreateGamemodeForm() {
           onChange={(e) => setName(e.currentTarget.value)}
         />
       </label>
-      <label htmlFor="gameName" className="input">
-        <span className="label">GameName</span>
+      <label htmlFor="appName" className="input">
+        <span className="label">App Name</span>
         <input
-          id="gameName"
+          id="appName"
           type="text"
-          onChange={(e) => setGameName(e.currentTarget.value)}
+          onChange={(e) => setAppName(e.currentTarget.value)}
         />
       </label>
       <label htmlFor="file" className="input">
@@ -66,7 +66,7 @@ export default function CreateGamemodeForm() {
       </label>
 
       <button type="submit" className="btn btn-primary">
-        J'espere sa fonctionne
+        Creer le docker compose
       </button>
     </form>
   );

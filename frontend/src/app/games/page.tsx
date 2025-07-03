@@ -1,12 +1,12 @@
-import CreateGamemodeForm from "@/Components/gamemode/createGamemode";
-import { Gamemodes } from "@/Components/gamemode/gamemodes";
+import CreateAppForm from "@/Components/Application/createApp";
+import { Applications } from "@/Components/Application/applications";
 import { cookies } from "next/headers";
 
-async function getGames() {
+async function getApps() {
   const cookiesStore = await cookies();
   console.log(cookiesStore.get("token")?.value);
 
-  const response = await fetch("http://localhost:3333/gamemode", {
+  const response = await fetch("http://localhost:3333/applications", {
     cache: "no-store",
   });
   const data = await response.json();
@@ -15,11 +15,11 @@ async function getGames() {
 }
 
 export default async function page() {
-  const games = await getGames();
+  const apps = await getApps();
   return (
-    <div className="flex flex-col justify-center items-center w-full ">
-      <CreateGamemodeForm />
-      <Gamemodes games={games} />
+    <div className="flex flex-col justify-center items-center w-full gap-5  ">
+      <CreateAppForm />
+      <Applications applications={apps} />
     </div>
   );
 }

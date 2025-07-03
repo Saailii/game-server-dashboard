@@ -1,7 +1,7 @@
-export default interface Game {
+export default interface App {
   id: string;
   name: string;
-  gameName: String;
+  appName: String;
   dockerFilePath: string;
   userId: string;
 }

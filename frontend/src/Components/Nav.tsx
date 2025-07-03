@@ -22,13 +22,13 @@ export default function Nav() {
         ) : (
           <>
             <li>
-              <Link href="/register" className="text-primary-content">
-                register
+              <Link href="/register" className="">
+                Register
               </Link>
             </li>
             <li>
-              <Link href="/login" className="text-primary-content">
-                login
+              <Link href="/login" className="">
+                Login
               </Link>
             </li>
           </>

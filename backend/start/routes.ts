@@ -10,7 +10,7 @@
 const UsersController = () => import('#controllers/users_controller')
 const AllyAuthsController = () => import('#controllers/ally_auths_controller')
 const DockerComposesController = () => import('#controllers/docker_composes_controller')
-const GamemodesController = () => import('#controllers/gamemodes_controller')
+const ApplicationController = () => import('#controllers/application_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
@@ -27,11 +27,11 @@ router.get('/auth/github', async ({ ally }) => {
   return ally.use('github').redirect()
 })
 
-//Gamemode Route
-router.get('gamemode', [GamemodesController, 'index'])
-router.post('game-compose', [GamemodesController, 'store']).middleware(middleware.auth())
-router.delete('gamemode/:id', [GamemodesController, 'delete']).middleware(middleware.auth())
-router.get('gamemode/:id', [GamemodesController, 'getOne'])
+//Application Route
+router.get('applications', [ApplicationController, 'index'])
+router.post('game-compose', [ApplicationController, 'store']).middleware(middleware.auth())
+router.delete('application/:id', [ApplicationController, 'delete']).middleware(middleware.auth())
+router.get('application/:id', [ApplicationController, 'getOne'])
 
 //Execute docker
 router.post('dockercompose/:id', [DockerComposesController, 'start'])

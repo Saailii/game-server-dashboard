@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
 import User from '#models/user'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-export default class Gamemode extends BaseModel {
+export default class Application extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -10,7 +10,7 @@ export default class Gamemode extends BaseModel {
   declare name: string
 
   @column()
-  declare gameName: string
+  declare appName: string
 
   @column()
   declare dockerFilePath: string

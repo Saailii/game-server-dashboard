@@ -1,12 +1,13 @@
 "use client";
 
 import { useAuth } from "@/context/authContext";
+import Link from "next/link";
 
 export default function Dock() {
   const { user, isLoading } = useAuth();
   return (
     <div className="dock bg-neutral text-neutral-content dock-active ">
-      <button>
+      <Link href={"/"}>
         <svg
           className="size-[1.2em]"
           xmlns="http://www.w3.org/2000/svg"
@@ -42,39 +43,28 @@ export default function Dock() {
           </g>
         </svg>
         <span className="dock-label">Home</span>
-      </button>
+      </Link>
 
-      <button className="dock-active">
+      <Link href={"/games"} className="">
         <svg
-          className="size-[1.2em]"
           xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="lucide lucide-dock-icon lucide-dock"
         >
-          <g fill="currentColor" strokeLinejoin="miter" strokeLinecap="butt">
-            <polyline
-              points="3 14 9 14 9 17 15 17 15 14 21 14"
-              fill="none"
-              stroke="currentColor"
-              strokeMiterlimit="10"
-              strokeWidth="2"
-            ></polyline>
-            <rect
-              x="3"
-              y="3"
-              width="18"
-              height="18"
-              rx="2"
-              ry="2"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="square"
-              strokeMiterlimit="10"
-              strokeWidth="2"
-            ></rect>
-          </g>
+          <path d="M2 8h20" />
+          <rect width="20" height="16" x="2" y="4" rx="2" />
+          <path d="M6 16h12" />
         </svg>
-        <span className="dock-label">Inbox</span>
-      </button>
+
+        <span className="dock-label">Application</span>
+      </Link>
 
       <button className="">
         <svg
