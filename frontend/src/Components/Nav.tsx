@@ -10,10 +10,10 @@ export default function Nav() {
   }
 
   return (
-    <nav>
-      <ul>
+    <nav className="bg-base-300  p-5">
+      <ul className="flex gap-2 justify-center items-center">
         <li>
-          <Link href="/" className="btn-primary">
+          <Link href="/" className="btn-primary ">
             Home
           </Link>
         </li>
@@ -22,10 +22,14 @@ export default function Nav() {
         ) : (
           <>
             <li>
-              <Link href="/register">register</Link>
+              <Link href="/register" className="text-primary-content">
+                register
+              </Link>
             </li>
             <li>
-              <Link href="/login">login</Link>
+              <Link href="/login" className="text-primary-content">
+                login
+              </Link>
             </li>
           </>
         )}

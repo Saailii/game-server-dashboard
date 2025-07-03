@@ -1,8 +1,10 @@
 import Gamemode from '#models/gamemode'
 import User from '#models/user'
+import { createOrUpdateGamemode } from '#validators/gamemode'
 import { cuid } from '@adonisjs/core/helpers'
 import { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
+import fs from 'node:fs'
 
 export default class GamemodesController {
   async index() {
@@ -10,7 +12,11 @@ export default class GamemodesController {
   }
 
   async store({ request, response, auth }: HttpContext) {
-    const { gameName, name } = request.body()
+    const { gameName, name } = await request.validateUsing(createOrUpdateGamemode)
+
+    // Trim wasn't working ????
+    const nameTrim = name.replaceAll(' ', '')
+    const gameNameTrim = gameName.replaceAll(' ', '')
 
     const user = await User.findBy('email', auth.user?.email)
 
@@ -33,15 +39,15 @@ export default class GamemodesController {
       })
     }
 
-    const path = `storage/uploads/${name}-${cuid()}`
+    const path = `storage/uploads/${nameTrim}-${cuid()}`
 
     await dockerComposeFile.move(app.makePath(path), {
       name: `docker-compose.yml`,
     })
 
     Gamemode.create({
-      name,
-      gameName,
+      name: nameTrim,
+      gameName: gameNameTrim,
       dockerFilePath: path,
       userId: user.id,
     })
@@ -51,7 +57,22 @@ export default class GamemodesController {
   async getOne({ response, request, auth }: HttpContext) {
     const id = request.param('id')
 
-    return await Gamemode.find(id)
+    if (isNaN(id)) {
+      return response.badRequest({ error: 'badrequest' })
+    }
+
+    const gamemode = await Gamemode.find(id)
+    if (!gamemode) {
+      return response.notFound({ error: 'Gamemode not found maybe was deleted' })
+    }
+
+    const contentFile = fs.readFileSync(`${gamemode.dockerFilePath}/docker-compose.yml`, 'utf8')
+
+    if (!contentFile) {
+      return response.notFound('No file founded')
+    }
+
+    return { gamemode, contentFile }
   }
 
   async showByGame() {}

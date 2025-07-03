@@ -36,7 +36,10 @@ export default function CreateGamemodeForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-2 justify-center align-center w-98"
+    >
       <label htmlFor="name" className="input">
         <span className="label">Name</span>
         <input
@@ -61,7 +64,10 @@ export default function CreateGamemodeForm() {
           onChange={(e) => setFile(e.target.files?.[0] || null)}
         />
       </label>
-      <button type="submit">J'espere sa fonctionne</button>
+
+      <button type="submit" className="btn btn-primary">
+        J'espere sa fonctionne
+      </button>
     </form>
   );
 }

@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="synthwave">
-      <body className={`antialiased`}>
+      <body className={`antialiased bg-base-200 h-screen`}>
         <AuthProvider>
           <Nav />
           <Dock />
