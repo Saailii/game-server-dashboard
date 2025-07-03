@@ -1,10 +1,12 @@
 import { DateTime } from 'luxon'
+import Gamemode from '#models/gamemode'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -24,6 +26,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare role: string
 
+  @hasMany(() => Gamemode)
+  declare gamemodes: HasMany<typeof Gamemode>
+
   @column({ serializeAs: null })
   declare password: string
 
@@ -40,5 +45,5 @@ export default class User extends compose(BaseModel, AuthFinder) {
     type: 'auth_token',
     tokenSecretLength: 40,
   })
-   static rememberMeTokens = DbRememberMeTokensProvider.forModel(User)
+  static rememberMeTokens = DbRememberMeTokensProvider.forModel(User)
 }

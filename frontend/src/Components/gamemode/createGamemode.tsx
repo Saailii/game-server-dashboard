@@ -5,7 +5,11 @@ import { FormEvent, useState } from "react";
 
 export default function CreateGamemodeForm() {
   const [file, setFile] = useState<File | null>(null);
-  const { user } = useAuth();
+  const [gameName, setGameName] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const { user, RequireAuth } = useAuth();
+
+  //RequireAuth();
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!file) {
@@ -17,6 +21,8 @@ export default function CreateGamemodeForm() {
 
     const formdata = new FormData();
     formdata.append("file", file);
+    formdata.append("gameName", gameName);
+    formdata.append("name", name);
 
     const response = await fetch("http://localhost:3333/game-compose", {
       method: "POST",
@@ -30,11 +36,28 @@ export default function CreateGamemodeForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="" className="label">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <label htmlFor="name" className="input">
+        <span className="label">Name</span>
         <input
+          type="text"
+          id="name"
+          onChange={(e) => setName(e.currentTarget.value)}
+        />
+      </label>
+      <label htmlFor="gameName" className="input">
+        <span className="label">GameName</span>
+        <input
+          id="gameName"
+          type="text"
+          onChange={(e) => setGameName(e.currentTarget.value)}
+        />
+      </label>
+      <label htmlFor="file" className="input">
+        <span className="label">Docker-compose.yml file</span>
+        <input
+          id="file"
           type="file"
-          className="input"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
         />
       </label>
