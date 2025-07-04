@@ -37,7 +37,6 @@ const handleDelete = async (appId: string, token: string | undefined) => {
     },
   });
   const data = await response.json();
-  console.log(data);
 
   window.location.href = "games";
 };

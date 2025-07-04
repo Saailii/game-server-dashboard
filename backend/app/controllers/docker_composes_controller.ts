@@ -15,6 +15,32 @@ export default class DockerComposesController {
     }
 
     const output = exec(
+      `cd ${application.dockerFilePath} && docker-compose up -d && docker ps -q`,
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`)
+          return
+        }
+        console.log(stdout)
+
+        return { stdout, stderr }
+      }
+    )
+    console.log(output)
+
+    return response.ok(output)
+  }
+
+  async stop({ response, request, auth }: HttpContext) {
+    const id = request.param('id')
+
+    const application = await Application.find(id)
+
+    if (!application) {
+      return response.notFound('Application not found maybe deleted ?')
+    }
+
+    const output = exec(
       `cd ${application.dockerFilePath} && docker-compose up -d`,
       (error, stdout, stderr) => {
         if (error) {

@@ -18,7 +18,7 @@ import { middleware } from './kernel.js'
 //Auth route
 router.post('register', [UsersController, 'create'])
 router.post('login', [UsersController, 'login'])
-
+router.delete('logout', [UsersController, 'logout']).middleware(middleware.auth())
 router.get('me', [UsersController, 'me']).middleware(middleware.auth())
 
 //Auth Oauth2 route

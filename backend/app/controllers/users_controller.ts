@@ -11,8 +11,6 @@ export default class UsersController {
   async create({ request, response }: HttpContext) {
     const { user } = request.body()
 
-    console.log(request.body())
-
     if (!user.email || !user.password) {
       return response.status(400).send({ error: 'No user or email provided' })
     }
@@ -38,25 +36,26 @@ export default class UsersController {
     }
 
     const token = await User.accessTokens.create(user)
-    console.log('Token value :', token)
 
     return response.ok({ message: 'Connected', token })
   }
 
   async logout({ auth, request, response }: HttpContext) {
-    const tokenValue = request.cookie('token')
+    const tokenValue = request.header('Authorization')?.split(' ')[1]
 
     if (!tokenValue) {
       return response.unauthorized({ error: 'Missing token' })
     }
 
-    const user = auth.user!
+    const user = await auth.getUserOrFail()
+
     if (!user) {
       return response.unauthorized({ error: 'Invalid token' })
     }
 
-    await User.accessTokens.delete(user, tokenValue)
-    response.clearCookie('token')
+    await auth.use('api').invalidateToken()
+
+    await User.accessTokens.delete(user, auth.user!.currentAccessToken!.identifier)
 
     return response.ok({ message: 'logged out successfully' })
   }

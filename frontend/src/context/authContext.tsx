@@ -1,5 +1,5 @@
 "use client";
-import Cookie from "cookiejs";
+import cookie from "cookiejs";
 import {
   createContext,
   useState,
@@ -46,10 +46,10 @@ export function AuthProvider({
   };
 
   useEffect(() => {
-    const token = Cookie.get("token");
+    const token = cookie.get("token");
     if (!token) {
       setIsLoading(false);
-      return console.log("missing token");
+      return;
     }
     const fetchUser = async () => {
       const response = await fetch("http://localhost:3333/me", {

@@ -9,11 +9,13 @@ export default function CreateAppForm() {
   const [name, setName] = useState<string>("");
   const { user, RequireAuth } = useAuth();
 
-  //RequireAuth();
+  if (!user) {
+    return null;
+  }
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!file) {
-      console.log("no file brother");
       return;
     }
 
@@ -32,7 +34,6 @@ export default function CreateAppForm() {
       body: formdata,
     });
     const data = await response.json();
-    console.log(data);
   };
 
   return (

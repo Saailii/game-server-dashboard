@@ -1,6 +1,22 @@
 "use client";
 import { useAuth } from "@/context/authContext";
+import cookie from "cookiejs";
 import Link from "next/link";
+
+async function handleLogout() {
+  const token = cookie.get("token");
+  if (!token) {
+    return "No user found";
+  }
+
+  const response = await fetch("http://localhost:3333/logout", {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  await response.json().then(() => (window.location.href = "/"));
+}
 
 export default function Nav() {
   const { user, isLoading } = useAuth();
@@ -18,7 +34,13 @@ export default function Nav() {
           </Link>
         </li>
         {user ? (
-          "Connecter"
+          <button
+            onClick={() => {
+              handleLogout();
+            }}
+          >
+            Logout
+          </button>
         ) : (
           <>
             <li>

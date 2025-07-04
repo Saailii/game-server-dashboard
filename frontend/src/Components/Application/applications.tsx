@@ -4,11 +4,17 @@ import Link from "next/link";
 import { FC } from "react";
 
 interface ApplicationProps {
-  applications: App[];
+  apps: {
+    applications: App[];
+  };
 }
 
-export const Applications: FC<ApplicationProps> = ({ applications }) => {
-  console.log(applications);
+export const Applications: FC<ApplicationProps> = ({ apps }) => {
+  const applications = apps.applications;
+
+  if (!applications) {
+    return "Aucune applkication a ";
+  }
 
   return (
     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 ">

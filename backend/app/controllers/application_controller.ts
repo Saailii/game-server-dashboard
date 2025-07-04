@@ -8,7 +8,8 @@ import fs from 'node:fs'
 
 export default class ApplicationController {
   async index() {
-    return await Application.all()
+    const applications = await Application.all()
+    return { applications }
   }
 
   async store({ request, response, auth }: HttpContext) {

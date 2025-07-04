@@ -12,20 +12,19 @@ export default function Page() {
   const [password, setPassword] = useState<String>();
 
   const onSubmitLoginForm = async () => {
-    const response = await fetch("http://localhost:3333/login", {
+    await fetch("http://localhost:3333/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
       body: JSON.stringify({ email, password }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      cookie.set("token", data.token.token);
-      window.location.href = "/";
-    }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        cookie.set("token", data.token.token);
+        window.location.href = "/";
+      });
   };
 
   const onSubmitGithubForm = () => {
@@ -33,32 +32,34 @@ export default function Page() {
   };
 
   return (
-    <div>
-      <label className="label">
-        <span>Email</span>
-        <input
-          type="text"
-          className="input"
-          onChange={(e) => setEmail(e.currentTarget.value)}
-        />
-      </label>
-      <label className="label">
-        <span>Password</span>
-        <input
-          type="password"
-          className="input"
-          onChange={(e) => setPassword(e.currentTarget.value)}
-        />
-      </label>
-      <button className="btn btn-primary" onClick={() => onSubmitLoginForm()}>
-        Login
-      </button>
-      <button
-        className="btn btn-secondary"
-        onClick={() => onSubmitGithubForm()}
-      >
-        Github
-      </button>
+    <div className="h-3/4 w-full flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-start gap-3 border-2 border-base-100 p-5 rounded-lg w- ">
+        <h1 className="text-2xl font-bold text-center w-full">Login</h1>
+        <label className="label flex-col items-start">
+          <span>Email</span>
+          <input
+            type="text"
+            className="input"
+            onChange={(e) => setEmail(e.currentTarget.value)}
+          />
+        </label>
+        <label className="label flex-col items-start">
+          <span>Password</span>
+          <input
+            type="password"
+            className="input"
+            onChange={(e) => setPassword(e.currentTarget.value)}
+          />
+        </label>
+        <div className="flex gap-5 justify-center items-center w-full">
+          <button
+            className="btn btn-primary"
+            onClick={() => onSubmitLoginForm()}
+          >
+            Login
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
