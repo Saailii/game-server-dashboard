@@ -12,6 +12,9 @@ import {
 export interface User {
   user: string;
   email: string;
+  fullName: string;
+  role: string;
+  id: string;
 }
 
 type AuthContextType = {

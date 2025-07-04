@@ -15,8 +15,6 @@ export default class ApplicationController {
     const { appName, name } = await request.validateUsing(createOrUpdateApplication)
 
     // Trim wasn't working ????
-    const nameTrim = name.replaceAll(' ', '')
-    const appNameTrim = appName.replaceAll(' ', '')
 
     const user = await User.findBy('email', auth.user?.email)
 
@@ -39,6 +37,7 @@ export default class ApplicationController {
       })
     }
 
+    const nameTrim = name.replaceAll(' ', '')
     const path = `storage/uploads/${nameTrim}-${cuid()}`
 
     await dockerComposeFile.move(app.makePath(path), {
@@ -46,8 +45,8 @@ export default class ApplicationController {
     })
 
     Application.create({
-      name: nameTrim,
-      appName: appNameTrim,
+      name,
+      appName,
       dockerFilePath: path,
       userId: user.id,
     })
@@ -78,14 +77,23 @@ export default class ApplicationController {
   async showByGame() {}
 
   async delete({ response, request, auth }: HttpContext) {
-    const user = await User.findBy('email', auth.user?.email)
+    const appId = request.param('id')
 
-    if (!user || user) {
-      return response.notFound({ error: 'User not found' })
+    const userId = auth.user!.id
+    const application = await Application.find(appId)
+
+    if (!application) {
+      return response.notFound({ error: 'User or App not found' })
     }
 
-    const gameId = request.param('id')
+    if (!(userId === application.userId)) {
+      return response.unauthorized({ error: 'You are not authorized to delete this App' })
+    }
 
-    console.log(gameId)
+    fs.rmSync(application.dockerFilePath, { recursive: true, force: true })
+
+    await application.delete()
+
+    return response.ok({ message: 'Application supprime avec success' })
   }
 }

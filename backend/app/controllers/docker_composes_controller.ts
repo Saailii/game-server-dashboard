@@ -14,21 +14,20 @@ export default class DockerComposesController {
       return response.notFound('Application not found maybe deleted ?')
     }
 
-    const output = await startDocker(application.dockerFilePath)
+    const output = exec(
+      `cd ${application.dockerFilePath} && docker-compose up -d`,
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`)
+          return
+        }
+        console.log(stdout)
+
+        return { stdout, stderr }
+      }
+    )
     console.log(output)
 
     return response.ok(output)
   }
-}
-
-async function startDocker(filePath: string) {
-  exec(`cd ${filePath} && docker-compose up -d`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`)
-      return
-    }
-    console.log(stdout)
-
-    return { stdout, stderr }
-  })
 }
